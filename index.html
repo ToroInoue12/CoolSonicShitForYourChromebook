@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>awesome sonic shit for your very low powered chromebook</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Define the background GIF using the path provided by the user */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('cat.gif'); /* User will add this file */
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Style for the main container to ensure readability over the background */
+        .content-card {
+            backdrop-filter: blur(4px); /* Subtle blur for better text contrast */
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .link-text {
+            transition: all 0.2s;
+            position: relative;
+            display: inline-block;
+        }
+        .link-text::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .link-text:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        /* Custom animation for the list reveal (for WASM/Emulators sections) */
+        .slide-down {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .slide-down.active {
+            max-height: 1000px; /* Large enough value to ensure content fits */
+        }
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+        .toggle-icon.rotated {
+            transform: rotate(90deg);
+        }
+
+        /* Styles for the Game.Com drama section */
+        .gamecom-transition {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 1;
+        }
+        .gamecom-drama-text {
+            opacity: 0;
+            transition: opacity 0.6s ease-in;
+            line-height: 1.5; /* Ensure readability for large text */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Background Music (Green Hill Zone) - Will autoplay and loop if browser allows -->
+    <audio id="background-music" src="greenhill.mp3" autoplay loop></audio>
+
+    <!-- Main Content Container (Semi-transparent for readability) -->
+    <div class="content-card bg-white/95 w-full max-w-5xl rounded-3xl shadow-2xl p-6 sm:p-10 lg:p-12">
+
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-5xl sm:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500 mb-3 tracking-tight leading-tight">
+                awesome sonic shit
+            </h1>
+            <h2 class="text-3xl sm:text-4xl font-bold text-gray-800">
+                <span class="p-1 rounded-lg bg-yellow-300/80 shadow-md">for your very low powered chromebook</span>
+            </h2>
+            <p class="mt-4 text-gray-600 text-lg">A portal to high-speed, unblocked fun optimized for low-end hardware.</p>
+        </header>
+
+        <!-- Game Categories Grid -->
+        <div class="grid grid-cols-1 gap-8">
+            
+            <!-- Category 1: Sonic the Hedgehog -->
+            <div class="bg-blue-50 p-6 rounded-2xl shadow-xl transition duration-300 border-b-4 border-blue-600 max-w-3xl mx-auto w-full">
+                
+                <!-- Main Category Header -->
+                <h3 class="text-3xl font-black text-blue-800 mb-6 flex items-center justify-center">
+                    <!-- Sonic Icon (Replaced with sonic.png image) -->
+                    <img src="sonic.png" alt="Sonic Icon" class="w-8 h-8 mr-3">
+                    Sonic the Hedgehog
+                </h3>
+
+                <!-- Sub-Category Link (Clickable) -->
+                <button id="wasm-toggle-button" onclick="toggleWASMList('wasm-ports-details', 'toggle-arrow')" class="w-full text-xl font-extrabold text-white bg-blue-500 hover:bg-blue-600 py-3 px-6 rounded-xl shadow-lg transition duration-200 flex items-center justify-center space-x-2">
+                    <span>Sonic WASM Ports</span>
+                    <svg id="toggle-arrow" class="w-5 h-5 toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+
+                <!-- WASM Ports Detail List (Initially Hidden) -->
+                <div id="wasm-ports-details" class="slide-down mt-6 bg-white p-4 rounded-lg shadow-inner border border-blue-200">
+                    <p class="text-lg font-bold text-gray-700 mb-3">Community-Made Web Ports:</p>
+                    <div class="space-y-4 text-sm">
+                        
+                        <!-- Item 1: Sonic Robo Blast 2 -->
+                        <div class="pb-2 border-b">
+                            <a href="https://chromaticpipe.github.io/SRB2-WASM/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic Robo Blast 2</a>
+                        </div>
+                        
+                        <!-- Item 2: SRB2 Kart -->
+                        <div class="pb-2 border-b">
+                            <a href="https://skyleite.github.io/Kart-Public-WASM/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">SRB2 Kart</a>
+                        </div>
+                        
+                        <!-- Item 3: Sonic 2: Community's Cut -->
+                        <div class="pb-2 border-b">
+                            <a href="https://heyjoeway.github.io/s2cx/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic 2: Community's Cut (Web supported)</a>
+                            <p class="text-red-600 italic mt-1">Requires a LEGAL Sonic 2 ROM to play, not supplied here.</p>
+                        </div>
+
+                        <!-- Item 4: Sonic 3: Angel Island Revisited -->
+                        <div class="pb-2 border-b">
+                            <a href="https://projects.sappharad.com/s3air_ios/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic 3: Angel Island Revisited (S3AIR)</a>
+                            <p class="text-red-600 italic mt-1">iOS and Web port. Requires a legal ROM of Sonic 3 and Knuckles to play (Steam ROM preferred).</p>
+                        </div>
+                        
+                        <!-- Item 5: Open Sonic -->
+                        <div class="pb-2 border-b">
+                            <a href="https://clarkeadg.github.io/opensonic-js/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Open Sonic</a>
+                            <p class="text-gray-500 mt-1">(Old Sonic Engine)</p>
+                        </div>
+                        
+                        <!-- Item 6: I Can't Believe It's Not Sonic 1 -->
+                        <div class="pb-2 border-b">
+                            <a href="https://jojudge.com/ICBINS1/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">I Can't Believe It's Not Sonic 1!</a>
+                        </div>
+                        
+                        <!-- Item 7: Motobug Engine -->
+                        <div class="pb-2 border-b">
+                            <a href="https://coderman64.github.io/motobug-engine/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Motobug Engine</a>
+                            <p class="text-gray-500 mt-1">Another Sonic Engine in the browser.</p>
+                        </div>
+
+                        <!-- Item 8: Sonic The Hedgehog (2013) -->
+                        <div class="pb-2 border-b">
+                            <a href="https://vinmannie.github.io/Sonic-1-WASM/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic The Hedgehog (2013 Decomp.)</a>
+                        </div>
+                        
+                        <!-- Item 9: Sonic The Hedgehog 2 (2013) -->
+                        <div class="pb-2 border-b">
+                            <a href="https://vinmannie.github.io/Sonic-2-WASM/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic The Hedgehog 2 (2013 Decomp.)</a>
+                        </div>
+                        
+                        <!-- Item 10: Sonic Mania (Plus) -->
+                        <div class="pb-2 border-b">
+                            <a href="https://vinmannie.github.io/SonicManiaWeb/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic Mania (Plus)</a>
+                            <p class="text-yellow-600 font-bold mt-1">Might take a while to load</p>
+                            <p class="text-gray-500 mt-1">(Based off the 2022 Decomp)</p>
+                        </div>
+                        
+                        <!-- Item 11: Sonic CD -->
+                        <div class="pb-2 border-b">
+                            <a href="https://tws2401.github.io/Sonic-CD-WASM/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic CD</a>
+                        </div>
+                        
+                        <!-- Item 12: Sonic Worlds Next (Engine) -->
+                        <div class="pb-2 border-b">
+                            <a href="https://grubbyplaya.github.io/Sonic-Worlds-Next-WASM/Sonic%20Worlds%20Next.html" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic Worlds Next (Engine)</a>
+                        </div>
+                        
+                        <!-- Item 13: Sonic 4 Episode 1 -->
+                        <div>
+                            <a href="https://wamwoowam.github.io/sonic4/" target="_blank" class="font-bold text-blue-700 hover:text-blue-500 link-text text-base">Sonic 4 Episode 1</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Category 2: Emulators -->
+            <div class="bg-purple-50 p-6 rounded-2xl shadow-xl transition duration-300 border-b-4 border-purple-600 max-w-3xl mx-auto w-full">
+                
+                <!-- Main Category Header -->
+                <h3 class="text-3xl font-black text-purple-800 mb-6 flex items-center justify-center">
+                    <!-- Emulator Icon (Replaced with retroarch.png image) -->
+                    <img src="retroarch.png" alt="RetroArch Icon" class="w-8 h-8 mr-3">
+                    Emulators
+                </h3>
+
+                <!-- Sub-Category Link (Clickable) -->
+                <button id="emulators-toggle-button" onclick="toggleWASMList('emulators-ports-details', 'emulators-toggle-arrow')" class="w-full text-xl font-extrabold text-white bg-purple-500 hover:bg-purple-600 py-3 px-6 rounded-xl shadow-lg transition duration-200 flex items-center justify-center space-x-2">
+                    <span>Web-Based Retro Gaming</span>
+                    <svg id="emulators-toggle-arrow" class="w-5 h-5 toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+
+                <!-- Emulator Detail List (Initially Hidden) -->
+                <div id="emulators-ports-details" class="slide-down mt-6 bg-white p-4 rounded-lg shadow-inner border border-purple-200">
+                    <p class="text-lg font-bold text-gray-700 mb-3">Unblocked Emulators (Requires ROMs):</p>
+                    <div class="space-y-4 text-sm">
+                        
+                        <!-- Item 1: RetroArch -->
+                        <div class="pb-2 border-b">
+                            <a href="https://web.libretro.com/" target="_blank" class="font-bold text-purple-700 hover:text-purple-500 link-text text-base">RetroArch (Official Libretro Web Port)</a>
+                            <p class="text-gray-500 mt-1">Libretro's official universal emulator, supporting **Genesis (Mega Drive), Game Gear, Master System, 32X, and Sega Pico**.</p>
+                        </div>
+                        
+                        <!-- Item 2: DS Player -->
+                        <div class="pb-2 border-b">
+                            <a href="https://ds.44670.org/" target="_blank" class="font-bold text-purple-700 hover:text-purple-500 link-text text-base">DS Player</a>
+                            <p class="text-gray-500 mt-1">Browser-based Nintendo DS emulator by 44670.org.</p>
+                        </div>
+
+                        <!-- Item 3: 44VBA -->
+                        <div class="pb-2 border-b">
+                            <a href="https://gba.44670.org/" target="_blank" class="font-bold text-purple-700 hover:text-purple-500 link-text text-base">44VBA (Game Boy Advance)</a>
+                            <p class="text-gray-500 mt-1">Browser-based Game Boy Advance emulator by 44670.org.</p>
+                        </div>
+                        
+                        <!-- Item 4: KXPReloaded -->
+                        <div class="pb-2 border-b">
+                            <a href="https://toroinoue12.github.io/KXPReloadedWebsite/" target="_blank" class="font-bold text-purple-700 hover:text-purple-500 link-text text-base">KXPReloaded (NES)</a>
+                            <p class="text-gray-500 mt-1">Browser-based Nintendo Entertainment System (NES) emulator by KitXP.</p>
+                        </div>
+
+                        <!-- Item 5: EmuHub (New Addition) -->
+                        <div>
+                            <a href="https://emuhub.net/" target="_blank" class="font-bold text-purple-700 hover:text-purple-500 link-text text-base">EmuHub</a>
+                            <p class="text-gray-500 mt-1">A hub for various browser-based emulators, including NES, SNES, and GBA.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Emulators Category -->
+            
+            <!-- Category 3: Game.Com Drama Section -->
+            <div id="gamecom-card" class="bg-slate-50 p-6 rounded-2xl shadow-xl transition-all duration-500 border-b-4 border-slate-600 max-w-3xl mx-auto w-full">
+                
+                <!-- Initial Content (Visible first) -->
+                <div id="gamecom-initial-content" class="gamecom-transition flex flex-col items-center justify-center">
+                    
+                    <!-- Main Category Header -->
+                    <h3 class="text-3xl font-black text-slate-800 mb-6 flex items-center justify-center text-center">
+                        <span class="text-4xl mr-3">🎮</span>
+                        Tiger Electronics Game.Com
+                    </h3>
+
+                    <!-- Clickable Button to trigger the drama -->
+                    <button onclick="toggleGamecomDrama(this)" class="w-full max-w-sm text-xl font-extrabold text-white bg-slate-500 hover:bg-slate-600 py-3 px-6 rounded-xl shadow-lg transition duration-200">
+                        Really, Game.com?
+                    </button>
+                    <p class="mt-2 text-sm text-slate-500">Click to reveal the dark truth.</p>
+                </div>
+                
+                <!-- Drama Content (Hidden initially) -->
+                <div id="gamecom-drama-content" class="hidden text-center flex flex-col items-center justify-center h-full">
+                    
+                    <!-- Mad Message -->
+                    <p id="mad-message" class="gamecom-drama-text text-3xl font-extrabold text-red-600 transform translate-y-2 mb-4">
+                        Why the hell wont you play game.com?
+                    </p>
+                    
+                    <!-- Sad Message -->
+                    <p id="sad-message" class="gamecom-drama-text text-xl font-bold text-slate-700 transform -translate-y-2">
+                        CAUSE GAME COM KILLED MY GRANDMA!
+                    </p>
+
+                    <!-- New Humorous Message -->
+                    <p id="eat-grandma-message" class="gamecom-drama-text text-2xl font-black text-green-600 mt-4">
+                        I ATE MY GRANDMA &lt;:D
+                    </p>
+                </div>
+
+            </div>
+            <!-- End Game.Com Drama Section -->
+            
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-10 text-center text-gray-500 text-sm border-t pt-6">
+            <p>&copy; 2025 kitxp's Jazzy Games. All links are placeholders (`#`).</p>
+        </footer>
+    </div>
+
+    <script>
+        /**
+         * Toggles the visibility of a detail list and rotates its associated arrow icon.
+         * Used for standard collapsable lists (Sonic WASM, Emulators).
+         * @param {string} listId - The ID of the slide-down div.
+         * @param {string} arrowId - The ID of the toggle arrow SVG.
+         */
+        function toggleWASMList(listId, arrowId) {
+            const list = document.getElementById(listId);
+            const arrow = document.getElementById(arrowId);
+            
+            // Toggle the 'active' class for the slide-down effect
+            list.classList.toggle('active');
+
+            // Toggle the 'rotated' class for the arrow icon
+            arrow.classList.toggle('rotated');
+        }
+
+        /**
+         * Triggers the dramatic content reveal for the Game.com section.
+         * @param {HTMLElement} button - The button element that was clicked.
+         */
+        function toggleGamecomDrama(button) {
+            const initial = document.getElementById('gamecom-initial-content');
+            const drama = document.getElementById('gamecom-drama-content');
+
+            // Disable the button to prevent repeated clicks
+            button.disabled = true;
+            
+            // 1. Fade out initial content
+            initial.style.opacity = '0';
+            
+            // 2. Wait for fade-out (300ms) and then reveal drama
+            setTimeout(() => {
+                // Hide the initial content container (removes it from layout flow)
+                initial.classList.add('hidden');
+                
+                // Show the drama content container
+                drama.classList.remove('hidden');
+                drama.classList.add('flex'); // Set flex properties for centering
+
+                // 3. Staggered text reveal for drama
+                const madMessage = document.getElementById('mad-message');
+                madMessage.style.opacity = '1'; // Instant reveal of mad message
+                
+                setTimeout(() => {
+                    const sadMessage = document.getElementById('sad-message');
+                    sadMessage.style.opacity = '1'; // Fade in the sad message
+                    
+                    setTimeout(() => {
+                        const eatGrandmaMessage = document.getElementById('eat-grandma-message');
+                        eatGrandmaMessage.style.opacity = '1'; // Fade in the final humorous message
+                    }, 1000); // 1 second delay after the sad message
+                    
+                }, 800); // 800ms delay for the second message
+                
+            }, 300); // Wait 300ms for initial content fade-out
+        }
+        
+        // Ensure the original button clicks still work
+        document.getElementById('wasm-toggle-button').onclick = () => toggleWASMList('wasm-ports-details', 'toggle-arrow');
+        document.getElementById('emulators-toggle-button').onclick = () => toggleWASMList('emulators-ports-details', 'emulators-toggle-arrow');
+    </script>
+
+</body>
+</html>
